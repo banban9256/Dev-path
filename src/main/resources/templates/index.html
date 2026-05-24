@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dev-Path 커리어 로드맵</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        /* 화면 전체를 세로 정중앙 정렬하기 위한 스타일 */
+        body {
+            background-color: #f8fafc; /* 부트스트랩 slate 백그라운드 느낌 */
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        /* 기획서 문구 타이틀 스타일 */
+        .main-title {
+            font-size: 3.5rem; /* 제목처럼 크게 */
+            font-weight: 800;
+            color: #1e293b;
+            letter-spacing: -1px;
+            margin-bottom: 10px;
+        }
+        .main-subtitle {
+            font-size: 1.25rem;
+            color: #64748b;
+            margin-bottom: 40px;
+        }
+        /* 중앙 고정 버튼 박스 너비 제한 */
+        .btn-container {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        /* 부트스트랩 버튼 커스텀 */
+        .custom-btn {
+            padding: 16px 32px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border-radius: 12px;
+            transition: all 0.2s ease-in-out;
+        }
+        /* 메인 버튼: 세련된 인디고 블루 */
+        .btn-indigo {
+            background-color: #4f46e5;
+            color: white;
+            border: none;
+            box-shadow: 0 4px 14px rgba(79, 70, 229, 0.3);
+        }
+        .btn-indigo:hover {
+            background-color: #4338ca;
+            color: white;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container text-center">
+    <h1 class="main-title">
+        <i class="fa-solid fa-star text-warning small"></i>
+        너의 길을 응원해 △~
+    </h1>
+    <p class="main-subtitle">SW 전공생을 위한 커스터마이징 커리어 로드맵 플랫폼</p>
+
+    <div th:if="${param.loginSuccess}" class="alert alert-success d-inline-block mb-4 shadow-sm" role="alert" style="border-radius: 10px;">
+        <i class="fa-solid fa-circle-check me-2"></i>
+        <strong><span th:text="${param.loginSuccess}"></span>님</strong>, 환영합니다! 로드맵 탐색을 시작해보세요.
+    </div>
+
+    <div class="btn-container d-grid gap-3">
+        <button th:onclick="|location.href='@{/user/login}'|" class="btn custom-btn btn-indigo shadow-sm" type="button">
+            <i class="fa-solid fa-route me-2"></i> 나의 로드맵 이어가기 (로그인)
+        </button>
+
+        <button th:onclick="|location.href='@{/user/signup}'|" class="btn custom-btn btn-outline-secondary" type="button">
+            <i class="fa-solid fa-user-plus me-2"></i> 신규 회원가입
+        </button>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

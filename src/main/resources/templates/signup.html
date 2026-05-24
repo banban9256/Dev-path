@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Dev-Path 회원가입</title>
+</head>
+<body>
+<h2>Dev-Path 회원가입</h2>
+
+<form th:action="@{/user/signup}" method="POST">
+    <label>사용자 아이디(영문):</label>
+    <input type="text" name="name" id="usernameInput"
+           placeholder="영문 또는 영문+숫자"
+           oninput="this.value = this.value.replace(/[^a-zA-Z0-9]/g, '')" required>
+
+    <button type="button" onclick="checkDuplicate()">중복확인</button><br><br>
+
+    <label>비밀번호:</label>
+    <input type="password" name="password" required><br><br>
+
+    <label>생년월일:</label>
+    <input type="text" name="birthdate" placeholder="YYYY-MM-DD"><br><br>
+
+    <label>전공:</label>
+    <input type="text" name="major"><br><br>
+
+    <label>학년:</label>
+    <select name="grade">
+        <option value="1">1학년</option>
+        <option value="2">2학년</option>
+        <option value="3">3학년</option>
+        <option value="4">4학년</option>
+        <option value="휴학생">휴학생</option>
+        <option value="대학원">대학원</option>
+    </select><br><br>
+
+    <label>희망 개발 분야:</label>
+    <input type="radio" name="desiredTrackId" value="1"> AI
+    <input type="radio" name="desiredTrackId" value="2"> IoT
+    <input type="radio" name="desiredTrackId" value="3"> XR
+    <input type="radio" name="desiredTrackId" value="4"> 프론트
+    <input type="radio" name="desiredTrackId" value="5"> 백엔드<br><br>
+
+    <label>현재 본인 숙련도:</label>
+    <input type="radio" name="level" value="상"> 상
+    <input type="radio" name="level" value="중" checked> 중
+    <input type="radio" name="level" value="하"> 하<br><br>
+
+    <button type="submit">회원가입 완료</button>
+</form>
+
+<script th:inline="javascript">
+    // 1. [중복확인] 버튼 클릭 시 실행되는 함수
+    function checkDuplicate() {
+        const username = document.getElementById("usernameInput").value;
+
+        // 빈칸 검사
+        if (!username || username.trim() === "") {
+            alert("사용자 아이디를 입력해주세요.");
+            return;
+        }
+
+        // 정규식을 이용한 영문 및 숫자 유효성 정밀 검사
+        const englishRegex = /^[a-zA-Z0-9]+$/;
+        if (!englishRegex.test(username)) {
+            alert("사용자 아이디는 영문 대소문자와 숫자만 사용할 수 있습니다.");
+            return;
+        }
+
+        // 백엔드 API 호출하여 DB 중복 체크
+        fetch(`/user/check-duplicate?name=${encodeURIComponent(username)}`)
+            .then(response => response.json())
+            .then(isDuplicate => {
+                if (isDuplicate) {
+                    alert("이미 존재하는 사용자 아이디입니다. 다른 아이디를 사용해주세요.");
+                } else {
+                    alert("사용 가능한 아이디입니다!");
+                }
+            })
+            .catch(error => {
+                console.error("에러 발생:", error);
+                alert("중복 확인 중 오류가 발생했습니다.");
+            });
+    }
+
+    // 2. 회원가입 완료 알림창 로직 (수정본)
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('success')) {
+        // 요구하신 고유 팝업 멘트로 명확하게 교체
+        alert("<로그인 됐습니다 로그인화면으로 돌아가세요 ! >");
+
+        // 확인을 누르는 순간 워크벤치 대신 맨 처음 대문 화면인 '/' 주소로 무조건 강제 이동시킵니다!
+        window.location.href = "/";
+    }
+</script>
+
+</body>
+</html>
